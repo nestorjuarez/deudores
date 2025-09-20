@@ -5,11 +5,11 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-type RouteContext = {
+interface RouteContext {
   params: {
     id: string;
   };
-};
+}
 
 export async function DELETE(
   request: NextRequest,
