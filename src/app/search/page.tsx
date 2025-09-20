@@ -55,7 +55,7 @@ export default function SearchPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
           <h1 className="text-3xl font-bold text-gray-900">Buscar Deudor por DNI</h1>
           <Link href="/" className="text-blue-500 hover:text-blue-800 font-medium">
             Volver al Panel de Control
@@ -66,7 +66,7 @@ export default function SearchPage() {
         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <div className="bg-white p-8 rounded-lg shadow">
             <form onSubmit={handleSearch}>
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <input
                   type="text"
                   value={dni}

@@ -54,8 +54,8 @@ export default function EditDeudaModal({ isOpen, onClose, onDeudaUpdated, deudaT
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
-      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
+      <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md max-h-full overflow-y-auto">
         <h2 className="text-2xl font-bold mb-6">Editar Deuda</h2>
         {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>

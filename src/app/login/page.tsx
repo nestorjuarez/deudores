@@ -33,7 +33,7 @@ function LoginForm() {
   };
 
   return (
-    <div className="p-10 bg-white rounded-xl shadow-2xl w-full max-w-sm">
+    <div className="p-6 sm:p-10 bg-white rounded-xl shadow-2xl w-full max-w-sm">
       <div className="flex justify-center mb-6">
         <Image src="/icon.png" alt="Logo Deudores" width={64} height={64} />
       </div>
@@ -87,7 +87,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 px-4">
       <Suspense fallback={<div>Cargando...</div>}>
         <LoginForm />
       </Suspense>

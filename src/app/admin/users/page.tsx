@@ -53,9 +53,9 @@ export default function AdminUsersPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900">Gestión de Usuarios</h1>
-          <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <h1 className="text-3xl font-bold text-gray-900 text-center sm:text-left">Gestión de Usuarios</h1>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-4">
             <button onClick={() => setIsModalOpen(true)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
               Agregar Usuario
             </button>
@@ -64,11 +64,11 @@ export default function AdminUsersPage() {
         </div>
       </header>
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="bg-white shadow rounded-lg p-4">
+        <div className="bg-white shadow rounded-lg p-4 overflow-x-auto">
           {error && <p className="text-red-500">{error}</p>}
           {!error && (
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+              <thead className="bg-gray-50 hidden md:table-header-group">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
@@ -78,11 +78,19 @@ export default function AdminUsersPage() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {users.map((user) => (
-                  <tr key={user.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{user.role}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{new Date(user.createdAt).toLocaleDateString()}</td>
+                  <tr key={user.id} className="block md:table-row border-b md:border-none p-4 md:p-0">
+                    <td className="block md:table-cell px-6 py-4 whitespace-nowrap md:border-b">
+                      <span className="font-bold md:hidden">Nombre: </span>{user.name}
+                    </td>
+                    <td className="block md:table-cell px-6 py-4 whitespace-nowrap md:border-b">
+                      <span className="font-bold md:hidden">Email: </span>{user.email}
+                    </td>
+                    <td className="block md:table-cell px-6 py-4 whitespace-nowrap md:border-b">
+                      <span className="font-bold md:hidden">Rol: </span>{user.role}
+                    </td>
+                    <td className="block md:table-cell px-6 py-4 whitespace-nowrap md:border-b">
+                      <span className="font-bold md:hidden">Registrado: </span>{new Date(user.createdAt).toLocaleDateString()}
+                    </td>
                   </tr>
                 ))}
               </tbody>
