@@ -9,10 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@auth/prisma-adapter": "^2.10.0",
-    "@prisma/client": "^6.16.2",
+    "@auth/prisma-adapter": "^1.6.0",
+    "@prisma/client": "^5.11.0",
     "next": "14.2.3",
-    "next-auth": "^4.24.11",
+    "next-auth": "^4.24.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0"
@@ -25,10 +25,10 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "bcryptjs": "^3.0.2",
-    "dotenv": "^17.2.2",
+    "dotenv": "^16.4.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
-    "prisma": "^6.16.2",
+    "prisma": "^5.11.0",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
