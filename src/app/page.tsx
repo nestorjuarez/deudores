@@ -1,103 +1,211 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { FiEdit, FiTrash2 } from 'react-icons/fi'; // Importando iconos
+import AddDeudorModal from '@/components/AddDeudorModal';
+import EditDeudaModal from '@/components/EditDeudaModal';
+
+interface Deudor {
+  id: string;
+  dni: string;
+  nombre: string;
+  apellido: string;
+}
+interface Deuda {
+  id: string;
+  monto: number;
+  descripcion: string;
+  deudor: Deudor;
+}
+
+export default function DashboardPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [deudaToEdit, setDeudaToEdit] = useState<Deuda | null>(null);
+  const [deudas, setDeudas] = useState<Deuda[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    }
+  }, [status, router]);
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      const fetchDeudas = async () => {
+        try {
+          setIsLoading(true);
+          setError(null);
+          const response = await fetch('/api/deudores');
+          if (!response.ok) {
+            throw new Error('No se pudieron cargar los datos');
+          }
+          const data = await response.json();
+          setDeudas(data);
+        } catch (err: any) {
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchDeudas();
+    }
+  }, [status]);
+
+  const handleOpenEditModal = (deuda: Deuda) => {
+    setDeudaToEdit(deuda);
+    setIsEditModalOpen(true);
+  };
+
+  const handleDeudaUpdated = (updatedDeuda: Deuda) => {
+    setDeudas(deudas.map((d) => (d.id === updatedDeuda.id ? updatedDeuda : d)));
+  };
+
+  const handleAddDeudor = (nuevaDeuda: Deuda) => {
+    setDeudas([nuevaDeuda, ...deudas]);
+  };
+
+  const handleDeleteDeuda = async (deudaId: string) => {
+    if (!window.confirm('¿Estás seguro de que quieres eliminar esta deuda?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/deudores/${deudaId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('No se pudo eliminar la deuda.');
+      }
+
+      setDeudas(deudas.filter((deuda) => deuda.id !== deudaId));
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  if (status === 'loading' || !session) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Cargando...
+      </div>
+    );
+  }
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow">
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Panel de Control</h1>
+              <p className="text-sm text-gray-500 mt-1">Comercio: {session.user?.name}</p>
+            </div>
+            <nav className="flex items-center gap-4">
+              {session?.user?.role === 'ADMIN' && (
+                <Link href="/admin/users" className="text-green-600 hover:text-green-800 font-medium">
+                  Gestión de Usuarios
+                </Link>
+              )}
+              <Link href="/search" className="text-blue-500 hover:text-blue-800 font-medium">
+                Buscar Deudores
+              </Link>
+              <button onClick={() => signOut()} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                Cerrar Sesión
+              </button>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <main>
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          <div className="px-4 py-6 sm:px-0">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-semibold text-gray-800">
+                Lista de Deudores
+              </h2>
+              <button
+                onClick={() => setIsAddModalOpen(true)}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Agregar Deudor
+              </button>
+            </div>
+            <div className="bg-white shadow rounded-lg">
+              <div className="p-4">
+                {isLoading && <p>Cargando deudores...</p>}
+                {error && <p className="text-red-500">{error}</p>}
+                {!isLoading && !error && deudas.length === 0 && (
+                  <p className="text-gray-500">
+                    No hay deudores registrados todavía.
+                  </p>
+                )}
+                {!isLoading && !error && deudas.length > 0 && (
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">DNI</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre Completo</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
+                        <th scope="col" className="relative px-6 py-3">
+                          <span className="sr-only">Acciones</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {deudas.map((deuda) => (
+                        <tr key={deuda.id}>
+                          <td className="px-6 py-4 whitespace-nowrap">{deuda.deudor.dni}</td>
+                          <td className="px-6 py-4 whitespace-nowrap">{deuda.deudor.nombre} {deuda.deudor.apellido}</td>
+                          <td className="px-6 py-4 whitespace-nowrap">${deuda.monto}</td>
+                          <td className="px-6 py-4 whitespace-nowrap">{deuda.descripcion}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                            <button
+                              onClick={() => handleOpenEditModal(deuda)}
+                              className="text-indigo-600 hover:text-indigo-900 transition-transform transform hover:scale-125"
+                              title="Editar"
+                            >
+                              <FiEdit size={20} />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteDeuda(deuda.id)}
+                              className="text-red-600 hover:text-red-900 transition-transform transform hover:scale-125"
+                              title="Eliminar"
+                            >
+                              <FiTrash2 size={20} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <AddDeudorModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAddDeudor={handleAddDeudor}
+      />
+      <EditDeudaModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onDeudaUpdated={handleDeudaUpdated}
+        deudaToEdit={deudaToEdit}
+      />
     </div>
   );
 }
