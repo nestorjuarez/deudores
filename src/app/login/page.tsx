@@ -74,7 +74,7 @@ function LoginForm() {
         <div>
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300"
+            className="w-full btn-primary"
             disabled={isLoading}
           >
             {isLoading ? 'Ingresando...' : 'Ingresar'}

@@ -75,10 +75,10 @@ export default function AddUserModal({ isOpen, onClose, onUserAdded }: AddUserMo
             </select>
           </div>
           <div className="flex items-center justify-end gap-4">
-            <button type="button" onClick={onClose} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" disabled={isSubmitting}>
+            <button type="button" onClick={onClose} className="btn-secondary" disabled={isSubmitting}>
               Cancelar
             </button>
-            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" disabled={isSubmitting}>
+            <button type="submit" className="btn-primary" disabled={isSubmitting}>
               {isSubmitting ? 'Creando...' : 'Crear Usuario'}
             </button>
           </div>

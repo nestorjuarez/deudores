@@ -56,7 +56,7 @@ export default function AdminUsersPage() {
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <h1 className="text-3xl font-bold text-gray-900 text-center sm:text-left">Gestión de Usuarios</h1>
           <div className="flex flex-wrap items-center justify-center sm:justify-end gap-4">
-            <button onClick={() => setIsModalOpen(true)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <button onClick={() => setIsModalOpen(true)} className="btn-success">
               Agregar Usuario
             </button>
             <Link href="/" className="text-blue-500 hover:text-blue-800 font-medium">Volver al Panel</Link>

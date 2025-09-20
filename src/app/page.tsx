@@ -107,7 +107,7 @@ export default function DashboardPage() {
               <Link href="/search" className="text-blue-500 hover:text-blue-800 font-medium">
                 Buscar Deudores
               </Link>
-              <button onClick={() => signOut()} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+              <button onClick={() => signOut()} className="btn-danger">
                 Cerrar Sesión
               </button>
             </nav>
@@ -123,7 +123,7 @@ export default function DashboardPage() {
               </h2>
               <button
                 onClick={() => setIsAddModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className="btn-primary"
               >
                 Agregar Deudor
               </button>
