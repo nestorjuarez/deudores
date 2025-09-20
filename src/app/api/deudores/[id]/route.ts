@@ -7,10 +7,11 @@ const prisma = new PrismaClient();
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: any
 ): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
-  const deudaId = params.id;
+  const deudaId = context.params.id;
 
   if (!session || !session.user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
@@ -43,10 +44,11 @@ export async function DELETE(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: any
 ): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
-  const deudaId = params.id;
+  const deudaId = context.params.id;
 
   if (!session || !session.user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
