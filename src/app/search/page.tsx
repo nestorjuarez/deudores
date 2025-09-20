@@ -45,8 +45,8 @@ export default function SearchPage() {
       }
       
       setResults(data);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError((err as Error).message);
     } finally {
       setIsLoading(false);
     }

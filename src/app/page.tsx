@@ -49,8 +49,8 @@ export default function DashboardPage() {
           }
           const data = await response.json();
           setDeudas(data);
-        } catch (err: any) {
-          setError(err.message);
+        } catch (err) {
+          setError((err as Error).message);
         } finally {
           setIsLoading(false);
         }
@@ -88,8 +88,8 @@ export default function DashboardPage() {
       }
 
       setDeudas(deudas.filter((deuda) => deuda.id !== deudaId));
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError((err as Error).message);
     }
   };
 

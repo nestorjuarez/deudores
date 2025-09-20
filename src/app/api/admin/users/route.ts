@@ -9,7 +9,6 @@ const prisma = new PrismaClient();
 export async function GET() {
   const session = await getServerSession(authOptions);
 
-  // @ts-ignore
   if (!session || !session.user || session.user.role !== 'ADMIN') {
     return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 });
   }
@@ -34,7 +33,6 @@ export async function GET() {
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
 
-  // @ts-ignore
   if (!session || !session.user || session.user.role !== 'ADMIN') {
     return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 });
   }
@@ -60,10 +58,16 @@ export async function POST(request: Request) {
         password: hashedPassword,
         role: role || 'USER', // Por defecto es 'USER' si no se especifica
       },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+      }
     });
 
-    const { password: _, ...userWithoutPassword } = newUser;
-    return NextResponse.json(userWithoutPassword, { status: 201 });
+    return NextResponse.json(newUser, { status: 201 });
   } catch (error) {
     console.error('Error al crear el usuario:', error);
     return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });

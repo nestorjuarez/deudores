@@ -12,7 +12,6 @@ export async function DELETE(
   const session = await getServerSession(authOptions);
   const deudaId = params.id;
 
-  // @ts-ignore
   if (!session || !session.user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   }
@@ -27,7 +26,6 @@ export async function DELETE(
     }
 
     // Security check: Ensure the user owns the debt they are trying to delete
-    // @ts-ignore
     if (deuda.comercioId !== session.user.id) {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 });
     }
@@ -50,7 +48,6 @@ export async function PUT(
   const session = await getServerSession(authOptions);
   const deudaId = params.id;
 
-  // @ts-ignore
   if (!session || !session.user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   }
@@ -70,7 +67,6 @@ export async function PUT(
       return NextResponse.json({ error: 'Deuda no encontrada' }, { status: 404 });
     }
 
-    // @ts-ignore
     if (deuda.comercioId !== session.user.id) {
       return NextResponse.json({ error: 'Acceso denegado' }, { status: 403 });
     }

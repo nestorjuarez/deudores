@@ -2,10 +2,18 @@
 
 import { useState } from 'react';
 
+interface User {
+  id: string;
+  name: string | null;
+  email: string | null;
+  role: string;
+  createdAt: string;
+}
+
 interface AddUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUserAdded: (user: any) => void;
+  onUserAdded: (user: User) => void;
 }
 
 export default function AddUserModal({ isOpen, onClose, onUserAdded }: AddUserModalProps) {
@@ -39,9 +47,8 @@ export default function AddUserModal({ isOpen, onClose, onUserAdded }: AddUserMo
       
       onUserAdded(data);
       onClose();
-    } catch (err: any) {
-      console.error('Error en el lado del cliente:', err);
-      setError(err.message);
+    } catch (err) {
+      setError((err as Error).message);
     } finally {
       setIsSubmitting(false);
     }

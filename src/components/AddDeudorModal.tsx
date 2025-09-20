@@ -5,7 +5,19 @@ import { useState } from 'react';
 interface AddDeudorModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddDeudor: (deudor: any) => void;
+  onAddDeudor: (deudor: Deuda) => void;
+}
+
+interface Deuda {
+  id: string;
+  monto: number;
+  descripcion: string;
+  deudor: {
+    id: string;
+    dni: string;
+    nombre: string;
+    apellido: string;
+  }
 }
 
 export default function AddDeudorModal({ isOpen, onClose, onAddDeudor }: AddDeudorModalProps) {
@@ -45,8 +57,8 @@ export default function AddDeudorModal({ isOpen, onClose, onAddDeudor }: AddDeud
       const nuevoDeudor = await response.json();
       onAddDeudor(nuevoDeudor);
       onClose(); // Cierra el modal en éxito
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError((err as Error).message);
     } finally {
       setIsSubmitting(false);
     }

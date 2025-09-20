@@ -28,7 +28,6 @@ export default function AdminUsersPage() {
     }
 
     if (status === 'authenticated') {
-      // @ts-ignore
       if (session.user?.role !== 'ADMIN') {
         router.push('/'); // Redirige a los no-admins al panel principal
       } else {
@@ -38,8 +37,8 @@ export default function AdminUsersPage() {
             if (!response.ok) throw new Error('No se pudieron obtener los usuarios.');
             const data = await response.json();
             setUsers(data);
-          } catch (err: any) {
-            setError(err.message);
+          } catch (err) {
+            setError((err as Error).message);
           } finally {
             setIsLoading(false);
           }

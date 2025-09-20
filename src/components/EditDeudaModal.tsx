@@ -12,7 +12,7 @@ interface Deuda {
 interface EditDeudaModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onDeudaUpdated: (updatedDeuda: any) => void;
+  onDeudaUpdated: (updatedDeuda: Deuda) => void;
   deudaToEdit: Deuda | null;
 }
 
@@ -50,8 +50,8 @@ export default function EditDeudaModal({ isOpen, onClose, onDeudaUpdated, deudaT
       
       onDeudaUpdated(data);
       onClose();
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError((err as Error).message);
     } finally {
       setIsSubmitting(false);
     }
