@@ -7,19 +7,7 @@ import { useRouter } from 'next/navigation';
 import { FiEdit, FiTrash2 } from 'react-icons/fi'; // Importando iconos
 import AddDeudorModal from '@/components/AddDeudorModal';
 import EditDeudaModal from '@/components/EditDeudaModal';
-
-interface Deudor {
-  id: string;
-  dni: string;
-  nombre: string;
-  apellido: string;
-}
-interface Deuda {
-  id: string;
-  monto: number;
-  descripcion: string;
-  deudor: Deudor;
-}
+import { Deuda } from '@/types';
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();

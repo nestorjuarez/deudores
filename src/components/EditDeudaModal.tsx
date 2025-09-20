@@ -1,13 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
-interface Deuda {
-  id: string;
-  monto: number;
-  descripcion: string;
-  // Añadimos más campos si son necesarios para la edición
-}
+import { Deuda } from '@/types';
 
 interface EditDeudaModalProps {
   isOpen: boolean;

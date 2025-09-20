@@ -5,14 +5,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import AddUserModal from '@/components/AddUserModal';
+import { User } from '@/types';
 
-interface User {
-  id: string;
-  name: string | null;
-  email: string | null;
-  role: string;
-  createdAt: string;
-}
 
 export default function AdminUsersPage() {
   const { data: session, status } = useSession();

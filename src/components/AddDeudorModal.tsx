@@ -1,23 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { Deuda } from '@/types';
 
 interface AddDeudorModalProps {
   isOpen: boolean;
   onClose: () => void;
   onAddDeudor: (deudor: Deuda) => void;
-}
-
-interface Deuda {
-  id: string;
-  monto: number;
-  descripcion: string;
-  deudor: {
-    id: string;
-    dni: string;
-    nombre: string;
-    apellido: string;
-  }
 }
 
 export default function AddDeudorModal({ isOpen, onClose, onAddDeudor }: AddDeudorModalProps) {

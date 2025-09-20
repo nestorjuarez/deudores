@@ -1,14 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-
-interface User {
-  id: string;
-  name: string | null;
-  email: string | null;
-  role: string;
-  createdAt: string;
-}
+import { User } from '@/types';
 
 interface AddUserModalProps {
   isOpen: boolean;
