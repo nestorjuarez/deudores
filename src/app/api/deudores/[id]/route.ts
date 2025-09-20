@@ -5,9 +5,15 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+type RouteContext = {
+  params: {
+    id: string;
+  };
+};
+
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  context: RouteContext
 ): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
   const deudaId = context.params.id;
@@ -43,7 +49,7 @@ export async function DELETE(
 
 export async function PUT(
   request: NextRequest,
-  context: { params: { id: string } }
+  context: RouteContext
 ): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
   const deudaId = context.params.id;
