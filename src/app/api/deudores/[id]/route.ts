@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export async function DELETE(
   request: NextRequest,
   context: { params: { id: string } }
-) {
+): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
   const deudaId = context.params.id;
 
@@ -44,7 +44,7 @@ export async function DELETE(
 export async function PUT(
   request: NextRequest,
   context: { params: { id: string } }
-) {
+): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
   const deudaId = context.params.id;
 
