@@ -5,18 +5,12 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-interface RouteContext {
-  params: {
-    id: string;
-  };
-}
-
 export async function DELETE(
   request: NextRequest,
-  context: RouteContext
+  { params }: { params: { id: string } }
 ): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
-  const deudaId = context.params.id;
+  const deudaId = params.id;
 
   if (!session || !session.user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
@@ -49,10 +43,10 @@ export async function DELETE(
 
 export async function PUT(
   request: NextRequest,
-  context: RouteContext
+  { params }: { params: { id: string } }
 ): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
-  const deudaId = context.params.id;
+  const deudaId = params.id;
 
   if (!session || !session.user) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
